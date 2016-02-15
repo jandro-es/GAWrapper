@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		B11DDA201C72925C00BDE182 /* Build framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = B11DDA211C72925C00BDE182 /* Build configuration list for PBXAggregateTarget "Build framework" */;
+			buildPhases = (
+				B11DDA241C72930200BDE182 /* LIPO Script */,
+			);
+			dependencies = (
+			);
+			name = "Build framework";
+			productName = "Build framework";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		B11DD9F11C6BE46100BDE182 /* GAWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = B11DD9F01C6BE46100BDE182 /* GAWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B11DDA0A1C6BEFBB00BDE182 /* GAI.h in Headers */ = {isa = PBXBuildFile; fileRef = B11DD9FF1C6BEFBB00BDE182 /* GAI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -183,6 +197,9 @@
 					B11DD9EC1C6BE46100BDE182 = {
 						CreatedOnToolsVersion = 7.2.1;
 					};
+					B11DDA201C72925C00BDE182 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
 				};
 			};
 			buildConfigurationList = B11DD9E71C6BE46100BDE182 /* Build configuration list for PBXProject "GAWrapper" */;
@@ -198,6 +215,7 @@
 			projectRoot = "";
 			targets = (
 				B11DD9EC1C6BE46100BDE182 /* GAWrapper */,
+				B11DDA201C72925C00BDE182 /* Build framework */,
 			);
 		};
 /* End PBXProject section */
@@ -211,6 +229,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B11DDA241C72930200BDE182 /* LIPO Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "LIPO Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Script to create a FAT framework using lipo\n\nset -e\n\nFRAMEWORK_NAME=\"GAWrapper\"\n\nif [ -d \"${SRCROOT}/build\" ]; then\nrm -rf \"${SRCROOT}/build\"\nfi\n\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration Release -arch arm64 -arch armv7 -arch armv7s only_active_arch=no defines_module=yes -sdk \"iphoneos\"\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration Release -arch x86_64 -arch i386 only_active_arch=no defines_module=yes -sdk \"iphonesimulator\"\n\nif [ -d \"${HOME}/${FRAMEWORK_NAME}.framework\" ]; then\nrm -rf \"${HOME}/${FRAMEWORK_NAME}.framework\"\nfi\n\ncp -r \"${SRCROOT}/build/Release-iphoneos/${FRAMEWORK_NAME}.framework\" \"${HOME}/${FRAMEWORK_NAME}.framework\"\n\nlipo -create -output \"${HOME}/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${SRCROOT}/build/Release-iphoneos/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${SRCROOT}/build/Release-iphonesimulator/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\"\n\nif [ -d \"${SRCROOT}/build\" ]; then\n\nrm -rf \"${SRCROOT}/build\"\n\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B11DD9E81C6BE46100BDE182 /* Sources */ = {
@@ -362,6 +397,20 @@
 			};
 			name = Release;
 		};
+		B11DDA221C72925C00BDE182 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B11DDA231C72925C00BDE182 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -379,6 +428,14 @@
 			buildConfigurations = (
 				B11DD9F61C6BE46100BDE182 /* Debug */,
 				B11DD9F71C6BE46100BDE182 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		B11DDA211C72925C00BDE182 /* Build configuration list for PBXAggregateTarget "Build framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B11DDA221C72925C00BDE182 /* Debug */,
+				B11DDA231C72925C00BDE182 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
