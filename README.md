@@ -52,7 +52,7 @@ assert(configureError == nil, "Error configuring Google services: \(configureErr
 
 GAI.sharedInstance().trackerWithTrackingId("<tracking_id>")
 
-``
+```
 
 The rest of the methods and properties in the documentation are available after initialization.
 
